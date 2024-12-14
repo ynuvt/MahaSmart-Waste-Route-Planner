@@ -14,42 +14,43 @@ const RouteMap = () => {
 
   const locations = {
     bin1: {
-      channelId: '2716511', 
+      channelId: '2785100', 
       apiKey: '5D4NZPEBA6X6DNJE',
-      coords: { latitude: 18.520306274275153, longitude: 73.83052283410248 },
+      coords: { latitude: 19.277817, longitude: 72.872763 }, // Updated coordinates
       defaultFillPercentage: 0,
     },
-    bin2: {
-      channelId: '2716512',
-      apiKey: 'VXKFSDTZEJWQP3ML',
-      coords: { latitude: 18.520677799296582, longitude: 73.82917117879065 },
-      defaultFillPercentage: 0,
-    },
-    bin3: {
-      channelId: '2716513',
-      apiKey: 'ABC123XYZ456', // Replace with the correct API key
-      coords: { latitude: 18.521010, longitude: 73.828900 }, // Example coordinates
-      defaultFillPercentage: 0,
-    },
-    bin4: {
-      channelId: '2716514',
-      apiKey: 'DEF789GHI012', // Replace with the correct API key
-      coords: { latitude: 18.520400, longitude: 73.829800 }, // Example coordinates
-      defaultFillPercentage: 0,
-    },
-    bin5: {
-      channelId: '2716515',
-      apiKey: 'JKL345MNO678', // Replace with the correct API key
-      coords: { latitude: 18.519800, longitude: 73.829400 }, // Example coordinates
-      defaultFillPercentage: 0,
-    },
-    bin6: {
-      channelId: '2716516',
-      apiKey: 'PQR901STU234', // Replace with the correct API key
-      coords: { latitude: 18.520600, longitude: 73.831000 }, // Example coordinates
-      defaultFillPercentage: 0,
-    },
+    // bin2: {
+    //   channelId: '2716512',
+    //   apiKey: 'VXKFSDTZEJWQP3ML',
+    //   coords: { latitude: 19.277900, longitude: 72.872700 }, // Updated coordinates
+    //   defaultFillPercentage: 0,
+    // },
+    // bin3: {
+    //   channelId: '2716513',
+    //   apiKey: 'ABC123XYZ456', // Replace with the correct API key
+    //   coords: { latitude: 19.277750, longitude: 72.872800 }, // Updated coordinates
+    //   defaultFillPercentage: 0,
+    // },
+    // bin4: {
+    //   channelId: '2716514',
+    //   apiKey: 'DEF789GHI012', // Replace with the correct API key
+    //   coords: { latitude: 19.277650, longitude: 72.872700 }, // Updated coordinates
+    //   defaultFillPercentage: 0,
+    // },
+    // bin5: {
+    //   channelId: '2716515',
+    //   apiKey: 'JKL345MNO678', // Replace with the correct API key
+    //   coords: { latitude: 19.277850, longitude: 72.872650 }, // Updated coordinates
+    //   defaultFillPercentage: 0,
+    // },
+    // bin6: {
+    //   channelId: '2716516',
+    //   apiKey: 'PQR901STU234', // Replace with the correct API key
+    //   coords: { latitude: 19.277720, longitude: 72.872760 }, // Updated coordinates
+    //   defaultFillPercentage: 0,
+    // },
   };
+  
   
   
 
@@ -91,16 +92,18 @@ const RouteMap = () => {
   };
 //above ends the corrected version
 
-  // {binData.map((bin, index) => (
-  //   <Marker
-  //     key={index}
-  //     coordinate={bin.coords}
-  //     title={bin.id}
-  //     description={`Fill: ${bin.fillLevel}%`}
-  //   >
-  //     <Image source={trashIcon} style={{ height: 40, width: 40 }} />
-  //   </Marker>
-  // ))}
+{/* Bin markers */}
+{binData.map((bin, index) => (
+  <Marker
+    key={index}
+    coordinate={bin.coords}
+    title={bin.id}
+    description={`Fill Level: ${bin.fillLevel}%`} // Correctly displays the fill level
+  >
+    <Image source={trashIcon} style={{ height: 40, width: 40 }} />
+  </Marker>
+))}
+
 
   {Object.keys(locations).map((key, index) => {
     const bin = locations[key];
