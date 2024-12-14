@@ -4,7 +4,7 @@ import * as Location from 'expo-location';
 import axios from 'axios';
 import { StyleSheet, View, Alert, Image, Text } from 'react-native';
 import trashIcon from './assets/trash-icon.png';
-import userIcon from './assets/truck-icon.png'; // Add a user icon image
+import userIcon from './assets/truck-icon.png';
 
 const RouteMap = () => {
   const [binData, setBinData] = useState([]);
@@ -14,48 +14,13 @@ const RouteMap = () => {
 
   const locations = {
     bin1: {
-      channelId: '2785100', 
+      channelId: '2785100',
       apiKey: '5D4NZPEBA6X6DNJE',
-      coords: { latitude: 19.277817, longitude: 72.872763 }, // Updated coordinates
+      coords: { latitude: 19.277817, longitude: 72.872763 },
       defaultFillPercentage: 0,
     },
-    // bin2: {
-    //   channelId: '2716512',
-    //   apiKey: 'VXKFSDTZEJWQP3ML',
-    //   coords: { latitude: 19.277900, longitude: 72.872700 }, // Updated coordinates
-    //   defaultFillPercentage: 0,
-    // },
-    // bin3: {
-    //   channelId: '2716513',
-    //   apiKey: 'ABC123XYZ456', // Replace with the correct API key
-    //   coords: { latitude: 19.277750, longitude: 72.872800 }, // Updated coordinates
-    //   defaultFillPercentage: 0,
-    // },
-    // bin4: {
-    //   channelId: '2716514',
-    //   apiKey: 'DEF789GHI012', // Replace with the correct API key
-    //   coords: { latitude: 19.277650, longitude: 72.872700 }, // Updated coordinates
-    //   defaultFillPercentage: 0,
-    // },
-    // bin5: {
-    //   channelId: '2716515',
-    //   apiKey: 'JKL345MNO678', // Replace with the correct API key
-    //   coords: { latitude: 19.277850, longitude: 72.872650 }, // Updated coordinates
-    //   defaultFillPercentage: 0,
-    // },
-    // bin6: {
-    //   channelId: '2716516',
-    //   apiKey: 'PQR901STU234', // Replace with the correct API key
-    //   coords: { latitude: 19.277720, longitude: 72.872760 }, // Updated coordinates
-    //   defaultFillPercentage: 0,
-    // },
   };
-  
-  
-  
 
-  // Fetch fill levels from ThingSpeak API
-  //corrected version
   const fetchBinData = async () => {
     try {
       const binDataPromises = Object.entries(locations).map(async ([key, binLocation]) => {
@@ -63,11 +28,12 @@ const RouteMap = () => {
           const response = await axios.get(
             `https://api.thingspeak.com/channels/${binLocation.channelId}/fields/1.json?api_key=${binLocation.apiKey}&results=1`
           );
-          
-          const fillLevel = response.data.feeds.length > 0 
-            ? parseFloat(response.data.feeds[0].field1) 
-            : binLocation.defaultFillPercentage;
-  
+
+          const fillLevel =
+            response.data.feeds.length > 0
+              ? parseFloat(response.data.feeds[0].field1)
+              : binLocation.defaultFillPercentage;
+
           return {
             id: `Bin ${Object.keys(locations).indexOf(key) + 1}`,
             fillLevel: fillLevel,
@@ -82,7 +48,7 @@ const RouteMap = () => {
           };
         }
       });
-  
+
       const data = await Promise.all(binDataPromises);
       setBinData(data);
     } catch (err) {
@@ -90,37 +56,7 @@ const RouteMap = () => {
       setError('Failed to fetch bin data');
     }
   };
-//above ends the corrected version
 
-{/* Bin markers */}
-{binData.map((bin, index) => (
-  <Marker
-    key={index}
-    coordinate={bin.coords}
-    title={bin.id}
-    description={`Fill Level: ${bin.fillLevel}%`} // Correctly displays the fill level
-  >
-    <Image source={trashIcon} style={{ height: 40, width: 40 }} />
-  </Marker>
-))}
-
-
-  {Object.keys(locations).map((key, index) => {
-    const bin = locations[key];
-    const fillLevel = binData.find((data) => data.id === `Bin ${index + 1}`)?.fillLevel || bin.defaultFillPercentage;
-    return (
-      <Marker
-        key={key}
-        coordinate={bin.coords}
-        title={`Bin ${index + 1}`}
-        description={`Fill: ${fillLevel}%`}
-      >
-        <Image source={trashIcon} style={{ height: 40, width: 40 }} />
-      </Marker>
-    );
-  })}
-  
-  // Fetch user location
   const fetchUserLocation = async () => {
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -140,16 +76,14 @@ const RouteMap = () => {
     }
   };
 
-  // Calculate the shortest route
   const calculateShortestRoute = () => {
     if (!userLocation || !binData.length) return;
 
-    const sortedBins = [...binData].sort((a, b) => b.fillLevel - a.fillLevel); // Sort by fill level
+    const sortedBins = [...binData].sort((a, b) => b.fillLevel - a.fillLevel);
     const route = [userLocation, ...sortedBins.map((bin) => bin.coords)];
     setShortestRoute(route);
   };
 
-  // Fetch data and calculate route on mount
   useEffect(() => {
     fetchUserLocation();
     fetchBinData();
@@ -159,7 +93,6 @@ const RouteMap = () => {
     calculateShortestRoute();
   }, [binData, userLocation]);
 
-  // Loading or error UI
   if (!userLocation) {
     return (
       <View style={styles.loadingContainer}>
@@ -180,7 +113,6 @@ const RouteMap = () => {
           longitudeDelta: 0.01,
         }}
       >
-        {/* User's location marker */}
         <Marker
           coordinate={userLocation}
           title="Your Location"
@@ -188,23 +120,17 @@ const RouteMap = () => {
           <Image source={userIcon} style={{ height: 40, width: 40 }} />
         </Marker>
 
-        {/* Bin markers */}
-        {Object.keys(locations).map((key, index) => {
-          const bin = locations[key];
-          const fillLevel = binData.find((data) => data.id === `Bin ${index + 1}`)?.fillLevel || 0;
-          return (
-            <Marker
-              key={key}
-              coordinate={bin.coords}
-              title={bin.name}
-              description={`Fill: ${fillLevel}%`}
-            >
-              <Image source={trashIcon} style={{ height: 40, width: 40 }} />
-            </Marker>
-          );
-        })}
+        {binData.map((bin, index) => (
+          <Marker
+            key={index}
+            coordinate={bin.coords}
+            title={bin.id}
+            description={`Fill Level: ${bin.fillLevel}%`}
+          >
+            <Image source={trashIcon} style={{ height: 40, width: 40 }} />
+          </Marker>
+        ))}
 
-        {/* Shortest route polyline */}
         {shortestRoute.length > 1 && (
           <Polyline
             coordinates={shortestRoute}
