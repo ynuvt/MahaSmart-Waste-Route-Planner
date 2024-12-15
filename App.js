@@ -3,7 +3,6 @@ import MapView, { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
 import axios from 'axios';
 import { StyleSheet, View, Alert, Image, Text } from 'react-native';
-import MapViewDirections from 'react-native-maps-directions';
 import trashIcon from './assets/trash-icon.png';
 import userIcon from './assets/truck-icon.png';
 
@@ -13,14 +12,32 @@ const RouteMap = () => {
   const [shortestRoute, setShortestRoute] = useState([]);
   const [error, setError] = useState(null);
 
-  const locations = {
-    bin1: {
-      channelId: '2785100',
-      apiKey: '5D4NZPEBA6X6DNJE',
-      coords: { latitude: 19.277817, longitude: 72.872763 },
-      defaultFillPercentage: 0,
-    },
-  };
+    const locations = {
+      bin1: {
+        channelId: '2785100',
+        apiKey: '5D4NZPEBA6X6DNJE',
+        coords: { latitude: 18.521548241377797, longitude: 73.83056191192142 },
+        defaultFillPercentage: 0,
+      },
+      bin2: {
+        channelId: '2785994',
+        apiKey: 'PNCD7WP8JE9C24U5',
+        coords: { latitude: 18.52135837966849, longitude: 73.83057286168507 },
+        defaultFillPercentage: 0,
+      },
+      bin3: {
+        channelId: '2786000',
+        apiKey: 'XYZAPIKEY3',
+        coords: { latitude: 18.52087841093805, longitude:73.83053936150888 },
+        defaultFillPercentage: 0,
+      },
+      bin4: {
+        channelId: '2786001',
+        apiKey: 'XYZAPIKEY4',
+        coords: { latitude: 18.520343805278102, longitude: 73.83052384465336 },
+        defaultFillPercentage: 0,
+      },
+    };
 
   const fetchBinData = async () => {
     try {
@@ -77,49 +94,26 @@ const RouteMap = () => {
     }
   };
 
-  const calculateShortestRoute = async () => {
+  const calculateShortestRoute = () => {
     if (!userLocation || !binData.length) return;
-  
-    let currentLocation = userLocation;
-    const visitedBins = [];
-    const routeCoordinates = [currentLocation];
-  
-    try {
-      while (visitedBins.length < binData.length) {
-        // Find the closest unvisited bin
-        const closestBin = binData
-          .filter((bin) => !visitedBins.includes(bin))
-          .reduce((prev, curr) => {
-            const prevDistance = getDistance(currentLocation, prev.coords);
-            const currDistance = getDistance(currentLocation, curr.coords);
-            return currDistance < prevDistance ? curr : prev;
-          });
-  
-        // Fetch route from current location to the closest bin
-        const response = await axios.get(
-          `https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocation.latitude},${currentLocation.longitude}&destination=${closestBin.coords.latitude},${closestBin.coords.longitude}&key=AIzaSyCNwnhKXPz1ZGcueIWoscgdZAEdBxfdjtY`
-        );
-  
-        const route = response.data.routes[0].legs[0].steps.map((step) => ({
-          latitude: step.end_location.lat,
-          longitude: step.end_location.lng,
-        }));
-  
-        routeCoordinates.push(...route);
-        visitedBins.push(closestBin);
-        currentLocation = closestBin.coords; // Update the current location
-      }
-  
-      setShortestRoute(routeCoordinates);
-    } catch (error) {
-      console.error('Error calculating shortest route:', error);
-    }
+
+    const sortedBins = [...binData].sort((a, b) => b.fillLevel - a.fillLevel);
+    const route = [userLocation, ...sortedBins.map((bin) => bin.coords)];
+    setShortestRoute(route);
   };
-  
 
   useEffect(() => {
+    // Initial fetch
     fetchUserLocation();
     fetchBinData();
+
+    // Set up interval to fetch bin data every 5 seconds
+    const intervalId = setInterval(() => {
+      fetchBinData();
+    }, 5000);
+
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
@@ -165,24 +159,16 @@ const RouteMap = () => {
         ))}
 
         {shortestRoute.length > 1 && (
-          <MapViewDirections
-          origin={shortestRoute[0]} // Starting point (user location)
-          destination={shortestRoute[shortestRoute.length - 1]} // Final destination (last bin)
-          waypoints={shortestRoute.slice(1, -1)} // Intermediate bins
-          apikey="AIzaSyCNwnhKXPz1ZGcueIWoscgdZAEdBxfdjtY" // Replace with your Google Maps API Key
-          strokeWidth={4}
-          strokeColor="blue"
-          optimizeWaypoints={true} // Optimize the waypoints for the shortest route
-          onError={(errorMessage) => {
-            console.error('Error with MapViewDirections:', errorMessage);
-          }}
-        />
-      )}
+          <Polyline
+            coordinates={shortestRoute}
+            strokeColor="blue"
+            strokeWidth={4}
+          />
+        )}
       </MapView>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
