@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MahaSmart Waste Route Planner</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Noto+Sans:wght@600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+              "surface-container": "#eceef0",
+              "on-secondary-container": "#5e2c00",
+              "on-error-container": "#93000a",
+              "surface-container-lowest": "#ffffff",
+              "on-surface": "#191c1e",
+              "surface-container-high": "#e6e8ea",
+              "primary": "#002869",
+              "surface": "#f7f9fb",
+              "on-primary-container": "#8dadff",
+              "secondary": "#964900",
+              "outline-variant": "#c4c6d3",
+              "on-primary": "#ffffff",
+              "primary-container": "#0b3d91",
+              "primary-fixed": "#dae2ff",
+              "tertiary-container": "#004e10",
+              "error": "#ba1a1a",
+              "on-secondary": "#ffffff",
+              "on-tertiary-fixed-variant": "#005312",
+              "primary-fixed-dim": "#b1c5ff",
+              "surface-container-highest": "#e0e3e5",
+              "inverse-primary": "#b1c5ff",
+              "on-primary-fixed-variant": "#144296",
+              "secondary-container": "#fc820c",
+              "on-secondary-fixed": "#311300",
+              "on-surface-variant": "#434652",
+              "secondary-fixed": "#ffdcc6",
+              "tertiary-fixed": "#a3f69c",
+              "outline": "#747783",
+              "inverse-on-surface": "#eff1f3",
+              "tertiary": "#003508",
+              "inverse-surface": "#2d3133",
+              "surface-tint": "#345baf",
+              "surface-container-low": "#f2f4f6",
+              "surface-dim": "#d8dadc",
+              "on-error": "#ffffff",
+              "on-secondary-fixed-variant": "#723600",
+              "surface-bright": "#f7f9fb",
+              "tertiary-fixed-dim": "#88d982",
+              "on-background": "#191c1e",
+              "surface-variant": "#e0e3e5",
+              "on-tertiary": "#ffffff",
+              "on-tertiary-fixed": "#002204",
+              "background": "#f7f9fb",
+              "error-container": "#ffdad6",
+              "on-tertiary-container": "#71c16d",
+              "on-primary-fixed": "#001947",
+              "secondary-fixed-dim": "#ffb786"
+            },
+            "borderRadius": {
+              "DEFAULT": "0.25rem",
+              "lg": "0.5rem",
+              "xl": "0.75rem",
+              "full": "9999px"
+            },
+            "spacing": {
+              "margin-desktop": "64px",
+              "container-max": "1280px",
+              "stack-lg": "32px",
+              "stack-sm": "8px",
+              "gutter": "24px",
+              "stack-md": "16px",
+              "base": "8px",
+              "margin-mobile": "16px"
+            },
+            "fontFamily": {
+              "body-md": ["Inter"],
+              "headline-lg-mobile": ["Noto Sans"],
+              "headline-sm": ["Noto Sans"],
+              "label-md": ["Inter"],
+              "headline-md": ["Noto Sans"],
+              "body-lg": ["Inter"],
+              "headline-lg": ["Noto Sans"],
+              "body-sm": ["Inter"]
+            },
+            "fontSize": {
+              "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+              "headline-lg-mobile": ["30px", {"lineHeight": "38px", "fontWeight": "700"}],
+              "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+              "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+              "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+              "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+              "headline-lg": ["40px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+              "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .custom-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: #002869;
+        cursor: pointer;
+        border-radius: 50%;
+        border: 2px solid white;
+        box-shadow: 0 0 5px rgba(0,0,0,0.2);
+      }
+      #root {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        overflow: hidden;
+      }
+      .leaflet-popup-content-wrapper {
+        background-color: #ffffff !important;
+        color: #191c1e !important;
+        border-radius: 12px !important;
+        border: 1px solid #c4c6d3 !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+        font-family: 'Inter', sans-serif;
+      }
+      .leaflet-popup-tip {
+        background-color: #ffffff !important;
+      }
+    </style>
+  </head>
+  <body class="bg-surface font-body-md text-on-surface overflow-hidden h-screen w-screen flex m-0 p-0">
+    <div id="root"></div>
+    <script type="module" src="/src/index.jsx"></script>
+  </body>
+</html>
