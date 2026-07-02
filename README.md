@@ -2,6 +2,8 @@
 
 A web dashboard for smart waste management, developed for the Government of Maharashtra. The application displays real-time trash bin levels, simulates IoT depth sensors, and dynamically computes optimized collection routes for waste dispatch trucks, prioritizing bins with higher fill levels.
 
+## Live at https://ynuvt.github.io/MahaSmart-Waste-Route-Planner/
+
 ## Key Features
 
 * **Dynamic Prioritized Routing**: Analyzes the fill levels of target dustbins and computes the routing sequence. It guarantees that the bin with the highest fill percentage is visited first.
@@ -58,6 +60,7 @@ To create an optimized production build:
 npm run build
 ```
 The compiled output will be generated in the `dist` directory.
+
 
 ## License
 
