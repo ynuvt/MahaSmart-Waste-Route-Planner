@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "name": "smart-waste",
   "version": "0.1.0",
   "private": true,
@@ -39,29 +38,4 @@
     "@vitejs/plugin-react": "^6.0.3",
     "vite": "^8.1.0"
   }
-=======
-  "name": "routemapexpo",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
-  },
-  "dependencies": {
-    "axios": "^1.7.9",
-    "expo": "~52.0.18",
-    "expo-location": "^18.0.4",
-    "expo-status-bar": "~2.0.0",
-    "react": "18.3.1",
-    "react-native": "^0.76.5",
-    "react-native-maps": "1.18.0",
-    "react-native-maps-directions": "^1.9.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.20.0"
-  },
-  "private": true
->>>>>>> 08740b50c116afe3276c66c7ae8eeace0f365f11
 }
